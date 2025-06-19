@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ cerveza.nombre }}</h1>
+  
+  {% if cerveza.foto %}
+    <img src="{{ cerveza.foto.url }}" alt="{{ cerveza.nombre }}" width="200">
+  {% endif %}
+
+  <p><strong>Estilo:</strong> {{ cerveza.estilo.nombre }}</p>
+  <p><strong>Alcohol:</strong> {{ cerveza.porcentaje_alcohol }} </p>
+  <p><strong>IBU:</strong> {{ cerveza.ibu }}</p>
+  <p>{{ cerveza.descripcion }}</p>
+
+  <h3>Formatos disponibles:</h3>
+  <ul>
+    {% for formato in formatos %}
+      <li>
+        {{ formato.tipo }} - {{ formato.volumen_ml }}ml - ${{ formato.precio }}
+        {% if formato.foto %}
+          <br><img src="{{ formato.foto }}" alt="{{ formato.tipo }}" width="100">
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>No hay formatos disponibles.</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'cervezas' %}">Volver al listado</a>
+{% endblock %}

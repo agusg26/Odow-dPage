@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Catálogo de Cervezas</h1>
+  <a class="btn btn-success" href="{% url 'cerveza_new' %}">Nuevo</a>
+  <ul>
+    {% for cerveza in cervezas %}
+      <li>
+        <a href="{% url 'cerveza' cerveza.pk %}">{{ cerveza.nombre }}</a>
+        {% if cerveza.foto %}
+          <img src="{{ cerveza.foto.url }}" alt="{{ cerveza.nombre }}" width="100">
+        {% endif %}
+        <p>{{ cerveza.descripcion }}</p>
+      </li>
+    {% empty %}
+      <li>No hay cervezas disponibles.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
