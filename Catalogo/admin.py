@@ -1,14 +1,15 @@
 from django.contrib import admin
 
 # Register your models here.
-from Catalogo.models import Cerveza, Formato, Categoria, GraduacionAlcoholica, Servicio, Chopera, Bar, Barra, Usuario, Envasado
+from Catalogo.models import  Cerveza, Categoria, GraduacionAlcoholica, Servicio, Bar, Usuario, TipoServicio, Barril, Pedido, DetallePedido, Chopera
 admin.site.register(Cerveza)
-admin.site.register(Formato)
 admin.site.register(Categoria)
 admin.site.register(GraduacionAlcoholica)
 admin.site.register(Servicio)
-admin.site.register(Chopera)
 admin.site.register(Bar)
-admin.site.register(Barra)
 admin.site.register(Usuario)
-admin.site.register(Envasado)
+admin.site.register(Barril)
+admin.site.register(TipoServicio)
+admin.site.register(Pedido)
+admin.site.register(DetallePedido)
+admin.site.register(Chopera)

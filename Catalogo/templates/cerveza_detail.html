@@ -8,23 +8,25 @@
   {% endif %}
 
   <p><strong>Estilo:</strong> {{ cerveza.estilo.nombre }}</p>
-  <p><strong>Alcohol:</strong> {{ cerveza.porcentaje_alcohol }} </p>
+  <p><strong>Alcohol:</strong> {{ cerveza.porcentaje_alcohol }}%</p>
   <p><strong>IBU:</strong> {{ cerveza.ibu }}</p>
   <p>{{ cerveza.descripcion }}</p>
+  <a class="btn btn-success mt-5" href="{% url 'servicios' %}">Ordenar Cerveza</a>
 
-  <h3>Formatos disponibles:</h3>
+  <h3>Barriles disponibles:</h3>
   <ul>
-    {% for formato in formatos %}
+    {% for barril in barriles %}
       <li>
-        {{ formato.tipo }} - {{ formato.volumen_ml }}ml - ${{ formato.precio }}
-        {% if formato.foto %}
-          <br><img src="{{ formato.foto }}" alt="{{ formato.tipo }}" width="100">
+        {{ barril.litros }}L - Precio estimado: ${{ barril.calcular_precio }}
+        {% if barril.cerveza.foto %}
+          <br><img src="{{ barril.cerveza.foto.url }}" alt="{{ barril.cerveza.nombre }}" width="100">
         {% endif %}
       </li>
     {% empty %}
-      <li>No hay formatos disponibles.</li>
+      <li>No hay barriles disponibles.</li>
     {% endfor %}
   </ul>
 
   <a href="{% url 'cervezas' %}">Volver al listado</a>
 {% endblock %}
+

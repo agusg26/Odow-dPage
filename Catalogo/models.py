@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+
 # Create your models here.
 class Categoria(models.Model):
 
@@ -20,53 +21,102 @@ class GraduacionAlcoholica(models.Model):
     def __str__(self):
         return f"{self.porcentaje}%"
 
-class Cerveza(models.Model):
 
+#class Envasado(models.Model):
+#    tipo = models.CharField(max_length=30)          # barril, lata, botella
+#    volumen_ml = models.CharField(max_length=30)     # 500, 1000, 30000, 50000
+
+#    def __str__(self):
+#        return self.volumen_ml
+    
+class Cerveza(models.Model):
     nombre = models.CharField(max_length=30)
     descripcion = models.TextField()
     estilo = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True)
-    porcentaje_alcohol = models.ForeignKey(GraduacionAlcoholica, on_delete=models.SET_NULL, null=True)
+    #porcentaje_alcohol = models.FloatField()
     ibu = models.IntegerField()
-    foto = models.ImageField(upload_to='cervezas/', null=True, blank=True)
-    disponible =  models.BooleanField(default=True)
+    foto = models.ImageField(upload_to='catalogo/upload/img/', null=True)
+    precio_litro = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    disponible = models.BooleanField(default=True)
 
     def get_absolute_url(self):
         return reverse('cervezaInfo', args=[str(self.id)])
+
     def __str__(self):
         return self.nombre
 
-class Envasado(models.Model):
-    tipo = models.CharField(max_length=30)          # barril, lata, botella
-    volumen_ml = models.CharField(max_length=30)     # 500, 1000, 30000, 50000
+class Barril(models.Model):
+    cerveza = models.ForeignKey(Cerveza, on_delete=models.CASCADE, related_name='barriles')
+    litros = models.IntegerField()
+    stock = models.IntegerField()
 
     def __str__(self):
-        return f"{self.tipo} {self.volumen_ml}ml"
+        return f"{self.litros}L - {self.cerveza.nombre}"
     
-class Formato(models.Model):
+    def calcular_precio(self):
+        return self.litros * self.cerveza.precio_litro
+    
 
-    cerveza = models.ForeignKey(Cerveza, on_delete=models.SET_NULL, null=True)
-    envasado = models.ForeignKey(Envasado, on_delete=models.SET_NULL, null=True)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)                    
-    foto = models.ImageField(upload_to = 'catalogo/upload/img/', null=True)
+class TipoServicio(models.Model):  # Ej: chopera, barriles para bares
+    nombre = models.CharField(max_length=30)
 
     def __str__(self):
-        return f"{self.envasado.tipo} {self.envasado.volumen_ml}ml - {self.cerveza.nombre}"
-    
+        return self.nombre
+
+
 class Servicio(models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
+    tipo = models.ForeignKey(TipoServicio, on_delete=models.SET_NULL, null=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    foto = foto = models.ImageField(upload_to = 'catalogo/upload/img/', null=True)
+    #barril = models.ForeignKey(Barril, on_delete=models.SET_NULL, null=True)
+    foto = models.ImageField(upload_to='catalogo/upload/img/', null=True)
 
     def __str__(self):
         return self.nombre
     
-class Chopera(Servicio):
-    litros = models.IntegerField()
+class Chopera(models.Model):
+    numero = models.IntegerField(unique=True)  # Chopera 1, 2, 3
+    disponible = models.BooleanField(default=True)      
 
-class Barra(Servicio):
-    canillas = models.IntegerField()
-    disponible = models.BooleanField()
+    def __str__(self):
+        return f"Chopera #{self.numero} - {'Disponible' if self.disponible else 'Ocupada'}"
+
+
+class Pedido(models.Model):
+    fecha = models.DateTimeField(auto_now_add=True)
+    servicio = models.ForeignKey('Servicio', on_delete=models.SET_NULL, null=True, blank=True)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"Pedido #{self.id} - {self.servicio.tipo.nombre}"
+    
+    def actualizar_total(self):
+        self.total = sum(detalle.subtotal for detalle in self.detalle.all())
+        self.save()
+    
+
+class DetallePedido(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='detalle')
+    #cerveza = models.ForeignKey(Cerveza, on_delete=models.CASCADE)
+    barril = models.ForeignKey(Barril, on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField(default=1)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2)
+
+
+    def save(self, *args, **kwargs):
+        if self.cantidad > self.barril.stock:
+            raise ValueError("No hay stock suficiente.")
+        self.subtotal = self.barril.litros * self.barril.cerveza.precio_litro * self.cantidad
+        super().save(*args, **kwargs)
+        self.barril.stock -= self.cantidad
+        self.barril.save()
+
+
+    def __str__(self):
+        return f"{self.cantidad}x {self.barril.litros}L de {self.barril.cerveza.nombre}"
+
+
 
 class Bar(models.Model): 
     nombre = models.CharField(max_length=30)
@@ -78,4 +128,5 @@ class Bar(models.Model):
 class Usuario(models.Model):
     nombre = models.CharField(max_length=30)
     contraseña = models.CharField(max_length=30)
+
 
