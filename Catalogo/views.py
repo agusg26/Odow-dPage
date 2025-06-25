@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from .models import Cerveza, Pedido, DetallePedido, Servicio
 from .forms import VentaForm, ServicioForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def index(request):
     return render(request, 'index.html')
@@ -29,14 +30,14 @@ class CervezaDetailView(generic.DetailView):
         context['barriles'] = self.object.barriles.all()
         return context
 
-class CervezaCreateView(generic.CreateView):
+class CervezaCreateView(LoginRequiredMixin,generic.CreateView):
     model = Cerveza
     fields = ['nombre', 'descripcion', 'estilo', 'porcentaje_alcohol', 'ibu', 'precio_litro', 'foto']
 
     template_name = 'cerveza_new.html'
     success_url = '/catalogo/cervezas/' 
 
-class CervezaUpdateView(generic.UpdateView):
+class CervezaUpdateView(LoginRequiredMixin,generic.UpdateView):
     model = Cerveza
     fields = ['nombre', 'descripcion', 'estilo', 'porcentaje_alcohol', 'ibu']
     template_name = 'cerveza_form.html'
@@ -101,20 +102,21 @@ class ServicioEstaticoListView(generic.ListView):
     template_name = 'servicioEstatico_list.html'  # nombre del archivo HTML
     context_object_name = 'servicios'     # variable en el template
 
-class ServicioCreateView(generic.CreateView):
+class ServicioCreateView(LoginRequiredMixin,generic.CreateView):
     model = Servicio
     form_class = ServicioForm
     template_name = 'servicio_form.html'
     success_url = reverse_lazy('servicioEstatico_list')   # redirige a la lista
+    login_url = '/accounts/login/'
 
 
-class ServicioUpdateView(generic.UpdateView):
+class ServicioUpdateView(LoginRequiredMixin,generic.UpdateView):
     model = Servicio
     form_class = ServicioForm
     template_name = 'servicio_form.html'
     success_url = reverse_lazy('servicioEstatico_list')
 
-class ServicioDeleteView(DeleteView):
+class ServicioDeleteView(LoginRequiredMixin,DeleteView):
     model = Servicio
     template_name = 'servicio_confirm_delete.html'
     success_url = reverse_lazy('servicioEstatico_list')

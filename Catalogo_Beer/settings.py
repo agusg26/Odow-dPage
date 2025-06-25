@@ -55,7 +55,7 @@ ROOT_URLCONF = 'Catalogo_Beer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['Catalogo/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,3 +125,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = "/"          # Redirección después del login exitoso
+LOGOUT_REDIRECT_URL = '/accounts/login/'
