@@ -33,7 +33,7 @@ class Cerveza(models.Model):
     nombre = models.CharField(max_length=30)
     descripcion = models.TextField()
     estilo = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True)
-    #porcentaje_alcohol = models.FloatField()
+    porcentaje_alcohol = models.ForeignKey(GraduacionAlcoholica, on_delete=models.SET_NULL, null=True)
     ibu = models.IntegerField()
     foto = models.ImageField(upload_to='catalogo/upload/img/', null=True)
     precio_litro = models.DecimalField(max_digits=10, decimal_places=2, default=0)

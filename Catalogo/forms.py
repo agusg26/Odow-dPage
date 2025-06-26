@@ -4,7 +4,7 @@ from Catalogo.models import Cerveza, TipoServicio, Chopera, Barril, Servicio
 class CervezaForm(forms.ModelForm):
     class Meta:
         model = Cerveza
-        fields = ['nombre', 'descripcion', 'estilo', 'ibu']
+        fields = ['nombre', 'descripcion', 'estilo', 'porcentaje_alcohol', 'ibu']
 
 class VentaForm(forms.Form):
     #toma un modelo y muestra una lista desplegable de un atributo del mismo, luego setea el campo en vacio.
