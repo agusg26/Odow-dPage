@@ -13,4 +13,5 @@ urlpatterns = [
     path('NuestrosServicios/nuevo/', views.ServicioCreateView.as_view(), name='servicio_crear'),
     path('NuestrosServicios/<int:pk>/editar/', views.ServicioUpdateView.as_view(), name='servicio_editar'),
     path('NuestrosServicios/<int:pk>/eliminar/', views.ServicioDeleteView.as_view(), name='servicio_eliminar'),
+    path('findUs/', views.generic.TemplateView.as_view(template_name='findUs.html'), name='findUs'),
 ]

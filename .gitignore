@@ -1,2 +1,12 @@
 venv/
 venv/
+# Archivos y carpetas de Python
+**__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3

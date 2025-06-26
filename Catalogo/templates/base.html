@@ -53,7 +53,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link click-scroll" href="#section_4">Find Us</a>
+                                <a class="nav-link click-scroll" href="{% url 'findUs' %}">Find Us</a>
                             </li>
 
                             <li class="nav-item">
@@ -66,6 +66,8 @@
                 <div class="col-md-8 ms-sm-auto col-lg-9 p-0">
                     {% block content %}{% endblock %}
                 </div>
+            </div>
+            
         </div>
     </div>
     <!-- JAVASCRIPT FILES -->
