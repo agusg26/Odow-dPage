@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.views import generic
 from .models import Cerveza, Servicio, Barril, DetallePedido, Pedido
 
-#gepeto
 from django.views.generic import FormView, DeleteView
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
@@ -12,6 +11,13 @@ from .models import Cerveza, Pedido, DetallePedido, Servicio, Chopera
 from .forms import VentaForm, ServicioForm, BarrilForm, ChoperaForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+
+from django.contrib import messages
+#graficos
+import pandas as pd
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
 
 def index(request):
     return render(request, 'index.html')
@@ -81,9 +87,12 @@ def realizar_venta(request, cerveza_id, servicio_id):
     cerveza = get_object_or_404(Cerveza, id=cerveza_id)
     servicio = get_object_or_404(Servicio, id=servicio_id)
 
+    print("VENTAAA")
     if request.method == 'POST':
+        print("POSTT")
         form = VentaForm(cerveza, request.POST)
         if form.is_valid():
+            print("no es validoooooooooo")
             barril = form.cleaned_data['barril']
             cantidad = form.cleaned_data['cantidad']
 
@@ -91,6 +100,7 @@ def realizar_venta(request, cerveza_id, servicio_id):
                 form.add_error('cantidad', 'Cantidad mayor al stock disponible')
             else:
                 if servicio.tipo.nombre == 'Chopera':
+                    print("CHOPERAAA")
                     choperas_disponibles = Chopera.objects.filter(disponible=True)
                     cantidad_choperas = choperas_disponibles.count()
 
@@ -114,8 +124,22 @@ def realizar_venta(request, cerveza_id, servicio_id):
                         for chopera in choperas_asignadas:
                             chopera.disponible = False
                             chopera.save()
-
+                        
+                        messages.success(request, "¡Venta realizada con éxito!")
                         return redirect('cervezas')
+                else:
+                    # crear pedido, asignar choperas, etc.
+                    pedido = Pedido.objects.create(servicio=servicio)
+                    DetallePedido.objects.create(
+                        pedido=pedido,
+                        barril=barril,
+                        cantidad=cantidad,
+                        subtotal=barril.calcular_precio() * cantidad
+                    )
+                    pedido.actualizar_total()
+                    messages.success(request, "¡Venta realizada con éxito!")
+                    return redirect('cervezas')
+                    
 
     else:
         form = VentaForm(cerveza)
@@ -250,3 +274,44 @@ def eliminar_chopera(request, chopera_id):
         return redirect('editar_stock_choperas')
 
     return redirect('editar_stock_choperas')
+
+
+#graficos
+def grafico_ventas_cervezas(request):
+    # Obtener todos los detalles de pedidos con info de cerveza
+    detalles = DetallePedido.objects.select_related('barril__cerveza')
+
+    # Crear una lista de dicts para DataFrame
+    data = []
+    for detalle in detalles:
+        nombre = detalle.barril.cerveza.nombre
+        cantidad = detalle.cantidad
+        data.append({'cerveza': nombre, 'cantidad': cantidad})
+
+    if not data:
+        return render(request, 'grafico_ventas.html', {'grafico': None, 'mensaje': 'No hay ventas registradas.'})
+
+    # Crear DataFrame y agrupar por cerveza
+    df = pd.DataFrame(data)
+    resumen = df.groupby('cerveza')['cantidad'].sum().sort_values(ascending=False)
+
+    # Generar gráfico
+    plt.figure(figsize=(10, 5))
+    resumen.plot(kind='bar', color='orange')
+    plt.title('Cervezas más vendidas')
+    plt.xlabel('Cerveza')
+    plt.ylabel('Cantidad vendida')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Guardar imagen en memoria
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    imagen_base64 = base64.b64encode(buffer.getvalue()).decode()
+    buffer.close()
+
+    return render(request, 'grafico_ventas.html', {
+        'grafico': imagen_base64,
+        'mensaje': None
+    })

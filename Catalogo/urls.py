@@ -21,4 +21,6 @@ urlpatterns = [
     path('choperas/', views.editar_stock_choperas, name='editar_stock_choperas'),
     path('chopera/<int:chopera_id>/editar/', views.editar_chopera, name='editar_chopera'),
     path('chopera/<int:chopera_id>/eliminar/', views.eliminar_chopera, name='eliminar_chopera'),
+    path('estadisticas/ventas/', views.grafico_ventas_cervezas, name='grafico_ventas'),
+    
 ]
