@@ -1,8 +1,6 @@
 /*
 
-TemplateMo 585 Barber Shop
 
-https://templatemo.com/tm-585-barber-shop
 color letras doradas:
 color: #E0C74D;
 
@@ -357,7 +355,7 @@ strong {
   HERO        
 -----------------------------------------*/
 .hero-section {
-  background-image: url('../imgs/cerveza1.png');
+  background-image: url('../imgs/fondo1.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size:cover;

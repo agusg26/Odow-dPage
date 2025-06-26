@@ -14,7 +14,7 @@
     <form method="post">
         {% csrf_token %}
         {{ form.barril.label_tag }} {{ form.barril }}
-        {{ form.cantidad.label_tag }} {{ form.cantidad }}
+        {{ form.cantidad.label_tag }} {{ form.cantidad }} <br>
         {{ form.fecha_alquiler.label_tag }} {{ form.fecha_alquiler }}
 
         <!-- Campos de ubicación -->

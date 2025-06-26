@@ -89,7 +89,7 @@ class ServicioDetailView(generic.DetailView):
     context_object_name = 'servicio'
 
 #vista que recive 2 parametros desde la url
-def generar_calendario_html(servicio):
+def generar_calendario_html(cerveza_id, servicio_id):
     hoy = date.today()
     año = hoy.year
     mes = hoy.month
@@ -122,7 +122,7 @@ def realizar_venta(request, cerveza_id, servicio_id):
     cerveza = get_object_or_404(Cerveza, id=cerveza_id)
     servicio = get_object_or_404(Servicio, id=servicio_id)
 
-    calendario_html = generar_calendario_html(servicio)
+    calendario_html = generar_calendario_html(cerveza_id, servicio_id)
 
     if request.method == 'POST':
         print("POSTT")

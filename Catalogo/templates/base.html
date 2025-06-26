@@ -63,6 +63,14 @@
                             </li>
                         </ul>
                         {% endblock %}
+                        {% if user.is_authenticated %}
+                        <br>
+                        <p>Sesión iniciada como {{ user.username }} | </p>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link">Cerrar sesión</button>
+                        </form>
+                        {% endif %}
                     </div>
                 </nav>
                 <div class="col-md-8 ms-sm-auto col-lg-9 p-0">
