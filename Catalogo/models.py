@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 # Create your models here.
 class Categoria(models.Model):
@@ -85,15 +86,24 @@ class Chopera(models.Model):
 
 class Pedido(models.Model):
     fecha = models.DateTimeField(auto_now_add=True)
+    fecha_alquiler = models.DateField(default=timezone.now)  # Fecha de uso
     servicio = models.ForeignKey('Servicio', on_delete=models.SET_NULL, null=True, blank=True)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    ubicacion_entrega = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return f"Pedido #{self.id} - {self.servicio.tipo.nombre}"
+        return f"Pedido #{self.id} - {self.servicio.tipo.nombre if self.servicio else 'Sin servicio'}"
     
     def actualizar_total(self):
         self.total = sum(detalle.subtotal for detalle in self.detalle.all())
         self.save()
+
+class ReservaServicio(models.Model):
+    servicio = models.ForeignKey(Servicio, on_delete=models.CASCADE)
+    fecha = models.DateField()
+
+    def __str__(self):
+        return f"{self.servicio.nombre} reservado en {self.fecha}"
     
 
 class DetallePedido(models.Model):

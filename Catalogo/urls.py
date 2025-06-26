@@ -23,4 +23,5 @@ urlpatterns = [
     path('chopera/<int:chopera_id>/eliminar/', views.eliminar_chopera, name='eliminar_chopera'),
     path('estadisticas/ventas/', views.grafico_ventas_cervezas, name='grafico_ventas'),
     
+    path('findUs/', views.generic.TemplateView.as_view(template_name='findUs.html'), name='findUs'),
 ]
