@@ -27,6 +27,14 @@
       </div>
     </div>
     {% endfor %}
+
+    {% if user.is_authenticated %}
+      <div class="text-center ">
+        <a href="{% url 'editar_stock_choperas' %}" class="btn btn-outline-primary align-self-start mx-5 mb-3">Editar Stock de Choperas</a>
+        <a href="{% url 'editar_stock_barriles' cerveza.id %}" class="btn btn-outline-primary align-self-start mx-5 mb-3">Editar Stock de Barriles</a>
+    </div>
+    {% endif %}
+    
   </div>
 </div>
 {% endblock %}

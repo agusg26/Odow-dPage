@@ -13,3 +13,6 @@ admin.site.register(TipoServicio)
 admin.site.register(Pedido)
 admin.site.register(DetallePedido)
 admin.site.register(Chopera)
+class PedidoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'fecha', 'servicio', 'total')  # 👈 Aquí agregás 'fecha'
+    readonly_fields = ('fecha',)  # 👈 Opcional, para que se vea como solo lectura

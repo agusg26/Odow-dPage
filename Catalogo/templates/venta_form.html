@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if form.non_field_errors %}
+  <div class="alert alert-danger">
+    {{ form.non_field_errors }}
+  </div>
+{% endif %}
+
 <div class="container mt-5">
-    <h2>Realizar venta</h2>
+    <h2 style="color: white;">Realizar Compra</h2>
     <p><strong>Cerveza:</strong> {{ cerveza.nombre }}</p>
     <p><strong>Servicio:</strong> {{ servicio.nombre }}</p>
 
@@ -11,6 +17,6 @@
         <button type="submit" class="btn btn-primary">Confirmar Venta</button>
     </form>
 
-    <a href="{% url 'cervezas' %}" class="btn btn-secondary mt-3">Cancelar</a>
+    <a href="{% url 'servicios' cerveza.id %}" class="btn btn-secondary mt-3">Cancelar</a>
 </div>
 {% endblock %}

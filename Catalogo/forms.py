@@ -24,3 +24,13 @@ class ServicioForm(forms.ModelForm):
         widgets = {
             'descripcion': forms.Textarea(attrs={'rows': 4}),
         }
+
+class BarrilForm(forms.ModelForm):
+    class Meta:
+        model = Barril
+        fields = ['litros', 'stock']  
+
+class ChoperaForm(forms.ModelForm):
+    class Meta:
+        model = Chopera
+        fields = ['numero', 'disponible']

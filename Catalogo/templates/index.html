@@ -1,39 +1,40 @@
 {% extends "base.html" %}
 {% load static %}
-{% block content %}
-<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
 
+{% block content %}
+<!-- SECCIÓN HERO -->
+<section class="hero-section d-flex justify-content-center align-items-center" id="section_1">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-12">
                 <h1 class="text-white mb-lg-3 mb-4"><strong>O'dowd</strong></h1>
                 <p class="text-black">Get the most professional beer for you</p>
                 <br>
-                <a class="btn custom-btn custom-border-btn custom-btn-bg-white smoothscroll me-2 mb-2" href="#section_2">About Us</a>
-                <!--<a class="btn custom-btn smoothscroll mb-2" href="#section_3">What we do</a>-->
+                <a class="btn custom-btn custom-border-btn custom-btn-bg-white smoothscroll me-2 mb-2" href="#section_2">
+                    About Us
+                </a>
             </div>
         </div>
     </div>
 
     <div class="custom-block d-lg-flex flex-column justify-content-center align-items-center">
-        <img src="{% static '../static/imgs/odou.png' %}" class="custom-block-image img-fluid" alt="">
+        <img src="{% static 'imgs/odou.png' %}" class="custom-block-image img-fluid" alt="O'dowd Logo">
         <h4><strong class="text-white">Hurry Up!</strong></h4>
-        <!--<a href="#booking-section" class="smoothscroll btn custom-btn custom-btn-italic mt-3">Book a seat</a>-->
     </div>
-
 </section>
 
-<hr>
-
-<h1>DW2024: Catálogo</h1>
-<p>Bienvenidos a <em>Catalogo</em>, una aplicación web desarrollada en Django.</p>
-
-<h2>Contenido dinámico</h2>
-<p>Nuestro catálogo se forma de :</p>
-<ul>
-    <li><strong>Autores:</strong></li>
-    <li><strong>Libros:</strong></li>
-    <li><strong>Ejemplares:</strong></li>
-    <li><strong>Disponibles:</strong></li>
-</ul>
+<!-- SECCIÓN ABOUT US -->
+<section id="section_2" class="container py-5 bg-light">
+    <div class="container">
+        <h2 class="mb-4 text-center">Sobre Nosotros</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <p>Somos una empresa familiar. Nuestro compromiso es hacer la mejor cerveza... ni más ni menos 💫🍻.</p>
+                <p>Absolutamente comprometidos con la calidad, empleamos maltas, lúpulos y levaduras totalmente naturales, sin ningún tipo de agregados, químicos o conservantes ⭐.</p>
+                <p>El Valle de Lerma nos regala su agua de un pozo surgente ubicado a 1.342 m.s.n.m. Por ese don de la naturaleza y por nuestra visión, sostenemos el cuidado del medio ambiente y el uso sustentable de los recursos 🌍.</p>
+                <p><strong>O’Dowd</strong>, espíritu libre, pasión y trabajo... cervezas únicas 💚💛.</p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
