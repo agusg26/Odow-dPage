@@ -605,14 +605,13 @@ strong {
 .contact-block {
   background: var(--secondary-color);
   border-radius: var(--border-radius-medium);
-  transform: rotate(8deg);
   height: 100%;
   padding: 20px 40px;
 }
 
-.contact-block h6 {
+/*.contact-block h6 {
   transform: rotate(-8deg);
-}
+}*/
 
 .contact-block .custom-icon {
   background: var(--primary-color);
@@ -628,7 +627,6 @@ strong {
 .contact-block strong {
   display: block;
   color: var(--white-color);
-  text-transform: uppercase;
   margin-top: 20px;
   margin-bottom: 10px;
 }

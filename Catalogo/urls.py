@@ -24,4 +24,5 @@ urlpatterns = [
     path('estadisticas/ventas/', views.grafico_ventas_cervezas, name='grafico_ventas'),
     
     path('findUs/', views.generic.TemplateView.as_view(template_name='findUs.html'), name='findUs'),
+    path('contacto/', views.generic.TemplateView.as_view(template_name='contacto.html'), name='contacto'),
 ]
