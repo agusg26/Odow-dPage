@@ -209,14 +209,14 @@ def realizar_venta(request, cerveza_id, servicio_id):
     
 class ServicioEstaticoListView(generic.ListView):
     model = Servicio
-    template_name = 'servicioEstatico_list.html'  # nombre del archivo HTML
+    template_name = 'servicioEstatico_List.html'  # nombre del archivo HTML
     context_object_name = 'servicios'     # variable en el template
 
 class ServicioCreateView(LoginRequiredMixin,generic.CreateView):
     model = Servicio
     form_class = ServicioForm
     template_name = 'servicio_form.html'
-    success_url = reverse_lazy('servicioEstatico_list')   # redirige a la lista
+    success_url = reverse_lazy('servicioEstatico_List')   # redirige a la lista
     login_url = '/accounts/login/'
 
 
@@ -224,12 +224,12 @@ class ServicioUpdateView(LoginRequiredMixin,generic.UpdateView):
     model = Servicio
     form_class = ServicioForm
     template_name = 'servicio_form.html'
-    success_url = reverse_lazy('servicioEstatico_list')
+    success_url = reverse_lazy('servicioEstatico_List')
 
 class ServicioDeleteView(LoginRequiredMixin,DeleteView):
     model = Servicio
     template_name = 'servicio_confirm_delete.html'
-    success_url = reverse_lazy('servicioEstatico_list')
+    success_url = reverse_lazy('servicioEstatico_List')
 
 #para control de barriles y stock
 def editar_stock_barriles(request, cerveza_id):
